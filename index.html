@@ -14,28 +14,35 @@
 </head>
 <body>
     <header>
-        <h1>Washer & Dryer Gallery</h1>
-        <p>Browse our collection of washer and dryer listings</p>
+        <h1>Fauxlist Gallery</h1>
+        <p>Browse our collection of listings</p>
     </header>
 
     <main>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="appliances">Appliances</button>
+            <button class="filter-btn" data-filter="exercise">Exercise</button>
+            <button class="filter-btn" data-filter="furniture">Furniture</button>
+        </div>
+
         <div class="gallery">
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_1.png" alt="Washer and Dryer 1">
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_2.png" alt="Washer and Dryer 2">
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_3.png" alt="Washer and Dryer 3">
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_4.png" alt="Washer and Dryer 4">
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_5.png" alt="Washer and Dryer 5">
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-category="appliances">
                 <img src="images/craigslist_washer_dryer_6.png" alt="Washer and Dryer 6">
             </div>
         </div>
@@ -44,5 +51,39 @@
     <footer>
         <p>&copy; 2026 Craigslist Gallery</p>
     </footer>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filterValue = button.getAttribute('data-filter');
+
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+
+                    if (filterValue === 'all' || category === filterValue) {
+                        item.style.display = 'block';
+                        setTimeout(() => item.classList.add('show'), 10);
+                    } else {
+                        item.classList.remove('show');
+                        setTimeout(() => item.style.display = 'none', 300);
+                    }
+                });
+            });
+        });
+
+        // Show all items on initial load
+        galleryItems.forEach(item => {
+            item.classList.add('show');
+        });
+    </script>
 </body>
 </html>
