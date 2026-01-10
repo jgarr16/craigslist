@@ -14,48 +14,75 @@
 </head>
 <body>
     <header>
-        <h1>Fauxlist Gallery</h1>
-        <p>Browse our collection of listings</p>
+        <h1>Fauxlist</h1>
     </header>
 
     <main>
         <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="appliances">Appliances</button>
-            <button class="filter-btn" data-filter="exercise">Exercise</button>
-            <button class="filter-btn" data-filter="furniture">Furniture</button>
+            <!-- Buttons will be dynamically generated -->
         </div>
 
         <div class="gallery">
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_1.png" alt="Washer and Dryer 1">
             </div>
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_2.png" alt="Washer and Dryer 2">
             </div>
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_3.png" alt="Washer and Dryer 3">
             </div>
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_4.png" alt="Washer and Dryer 4">
             </div>
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_5.png" alt="Washer and Dryer 5">
             </div>
-            <div class="gallery-item" data-category="appliances">
+            <div class="gallery-item" data-category="washer-dryer">
                 <img src="images/craigslist_washer_dryer_6.png" alt="Washer and Dryer 6">
             </div>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Craigslist Gallery</p>
+        <p>&copy; 2026 Fauxlist Gallery</p>
     </footer>
 
     <script>
+        // Dynamically generate filter buttons based on categories in the HTML
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const filterButtonsContainer = document.querySelector('.filter-buttons');
+
+        // Get unique categories from gallery items
+        const categories = new Set();
+        galleryItems.forEach(item => {
+            const category = item.getAttribute('data-category');
+            if (category) {
+                categories.add(category);
+            }
+        });
+
+        // Create "All" button
+        const allButton = document.createElement('button');
+        allButton.className = 'filter-btn active';
+        allButton.setAttribute('data-filter', 'all');
+        allButton.textContent = 'All';
+        filterButtonsContainer.appendChild(allButton);
+
+        // Create buttons for each category
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.className = 'filter-btn';
+            button.setAttribute('data-filter', category);
+            // Convert "washer-dryer" to "Washer Dryer" for display
+            button.textContent = category.split('-').map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+            filterButtonsContainer.appendChild(button);
+        });
+
         // Filter functionality
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
 
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
