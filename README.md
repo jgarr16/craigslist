@@ -55,3 +55,19 @@ images/craigslist_office_chair_1.png     → Category: Office Chair
 ## Live Site
 
 Visit your site at: `https://jgarr16.github.io/craigslist/`
+
+## Shareable Category URLs
+
+Each category has its own URL that you can share directly:
+
+- **All items**: `https://jgarr16.github.io/craigslist/` or `https://jgarr16.github.io/craigslist/#all`
+- **Washer Dryer**: `https://jgarr16.github.io/craigslist/#washer_dryer`
+- **Home Gym**: `https://jgarr16.github.io/craigslist/#home_gym`
+- **Treadmill**: `https://jgarr16.github.io/craigslist/#treadmill`
+- **Nine Foot Mirror**: `https://jgarr16.github.io/craigslist/#nine_foot_mirror`
+
+When someone visits a category URL, the page automatically filters to show only that category. They can still navigate to other categories using the filter buttons.
+
+The URL pattern is: `https://jgarr16.github.io/craigslist/#[category_name]`
+
+The category name in the URL should match the category name from your image filenames (the part between `craigslist_` and `_[number]`).

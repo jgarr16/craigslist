@@ -85,7 +85,7 @@
                 // Set up filter functionality
                 const filterButtons = document.querySelectorAll('.filter-btn');
 
-                const applyFilter = (filterValue) => {
+                const applyFilter = (filterValue, updateUrl = true) => {
                     // Update active button
                     filterButtons.forEach(btn => {
                         if (btn.getAttribute('data-filter') === filterValue) {
@@ -108,6 +108,15 @@
                         }
                     });
 
+                    // Update URL hash for shareable links
+                    if (updateUrl) {
+                        if (filterValue === 'all') {
+                            history.pushState(null, null, '#all');
+                        } else {
+                            history.pushState(null, null, `#${filterValue}`);
+                        }
+                    }
+
                     // Scroll to top smoothly
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 };
@@ -126,6 +135,27 @@
                         applyFilter(category);
                     });
                 });
+
+                // Handle browser back/forward buttons
+                window.addEventListener('hashchange', () => {
+                    const hash = window.location.hash.substring(1); // Remove the #
+                    const filterValue = hash || 'all';
+                    applyFilter(filterValue, false); // Don't update URL since we're responding to URL change
+                });
+
+                // Apply filter based on URL hash on page load
+                const initialHash = window.location.hash.substring(1);
+                if (initialHash && initialHash !== 'all') {
+                    // Check if the hash matches a valid category
+                    const validCategories = Array.from(categories);
+                    if (validCategories.includes(initialHash)) {
+                        applyFilter(initialHash, false);
+                    } else {
+                        applyFilter('all', false);
+                    }
+                } else {
+                    applyFilter('all', false);
+                }
             })
             .catch(error => {
                 console.error('Error loading gallery data:', error);
