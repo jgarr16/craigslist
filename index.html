@@ -23,24 +23,7 @@
         </div>
 
         <div class="gallery">
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_1.png" alt="Washer and Dryer 1">
-            </div>
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_2.png" alt="Washer and Dryer 2">
-            </div>
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_3.png" alt="Washer and Dryer 3">
-            </div>
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_4.png" alt="Washer and Dryer 4">
-            </div>
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_5.png" alt="Washer and Dryer 5">
-            </div>
-            <div class="gallery-item" data-category="washer-dryer">
-                <img src="images/craigslist_washer_dryer_6.png" alt="Washer and Dryer 6">
-            </div>
+            <!-- Gallery items will be dynamically generated from gallery-data.json -->
         </div>
     </main>
 
@@ -49,68 +32,86 @@
     </footer>
 
     <script>
-        // Dynamically generate filter buttons based on categories in the HTML
-        const galleryItems = document.querySelectorAll('.gallery-item');
+        // Load gallery data and dynamically generate everything
+        const galleryContainer = document.querySelector('.gallery');
         const filterButtonsContainer = document.querySelector('.filter-buttons');
+        let allGalleryItems = [];
 
-        // Get unique categories from gallery items
-        const categories = new Set();
-        galleryItems.forEach(item => {
-            const category = item.getAttribute('data-category');
-            if (category) {
-                categories.add(category);
-            }
-        });
+        // Fetch gallery data
+        fetch('gallery-data.json')
+            .then(response => response.json())
+            .then(galleryData => {
+                // Generate gallery items
+                galleryData.forEach(item => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item show';
+                    galleryItem.setAttribute('data-category', item.category);
 
-        // Create "All" button
-        const allButton = document.createElement('button');
-        allButton.className = 'filter-btn active';
-        allButton.setAttribute('data-filter', 'all');
-        allButton.textContent = 'All';
-        filterButtonsContainer.appendChild(allButton);
+                    const img = document.createElement('img');
+                    img.src = `images/${item.filename}`;
+                    img.alt = item.alt;
 
-        // Create buttons for each category
-        categories.forEach(category => {
-            const button = document.createElement('button');
-            button.className = 'filter-btn';
-            button.setAttribute('data-filter', category);
-            // Convert "washer-dryer" to "Washer Dryer" for display
-            button.textContent = category.split('-').map(word =>
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
-            filterButtonsContainer.appendChild(button);
-        });
-
-        // Filter functionality
-        const filterButtons = document.querySelectorAll('.filter-btn');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filterValue = button.getAttribute('data-filter');
-
-                // Update active button
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                // Filter gallery items
-                galleryItems.forEach(item => {
-                    const category = item.getAttribute('data-category');
-
-                    if (filterValue === 'all' || category === filterValue) {
-                        item.style.display = 'block';
-                        setTimeout(() => item.classList.add('show'), 10);
-                    } else {
-                        item.classList.remove('show');
-                        setTimeout(() => item.style.display = 'none', 300);
-                    }
+                    galleryItem.appendChild(img);
+                    galleryContainer.appendChild(galleryItem);
                 });
-            });
-        });
 
-        // Show all items on initial load
-        galleryItems.forEach(item => {
-            item.classList.add('show');
-        });
+                allGalleryItems = document.querySelectorAll('.gallery-item');
+
+                // Get unique categories
+                const categories = new Set();
+                galleryData.forEach(item => {
+                    categories.add(item.category);
+                });
+
+                // Create "All" button
+                const allButton = document.createElement('button');
+                allButton.className = 'filter-btn active';
+                allButton.setAttribute('data-filter', 'all');
+                allButton.textContent = 'All';
+                filterButtonsContainer.appendChild(allButton);
+
+                // Create buttons for each category
+                categories.forEach(category => {
+                    const button = document.createElement('button');
+                    button.className = 'filter-btn';
+                    button.setAttribute('data-filter', category);
+                    // Convert "washer_dryer" to "Washer Dryer" for display
+                    button.textContent = category.split('_').map(word =>
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
+                    filterButtonsContainer.appendChild(button);
+                });
+
+                // Set up filter functionality
+                const filterButtons = document.querySelectorAll('.filter-btn');
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filterValue = button.getAttribute('data-filter');
+
+                        // Update active button
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        // Filter gallery items
+                        allGalleryItems.forEach(item => {
+                            const category = item.getAttribute('data-category');
+
+                            if (filterValue === 'all' || category === filterValue) {
+                                item.style.display = 'block';
+                                setTimeout(() => item.classList.add('show'), 10);
+                            } else {
+                                item.classList.remove('show');
+                                setTimeout(() => item.style.display = 'none', 300);
+                            }
+                        });
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error loading gallery data:', error);
+                galleryContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Error loading gallery. Please run generate-gallery.js script.</p>';
+            });
     </script>
 </body>
 </html>
