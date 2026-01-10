@@ -85,26 +85,45 @@
                 // Set up filter functionality
                 const filterButtons = document.querySelectorAll('.filter-btn');
 
+                const applyFilter = (filterValue) => {
+                    // Update active button
+                    filterButtons.forEach(btn => {
+                        if (btn.getAttribute('data-filter') === filterValue) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+
+                    // Filter gallery items
+                    allGalleryItems.forEach(item => {
+                        const category = item.getAttribute('data-category');
+
+                        if (filterValue === 'all' || category === filterValue) {
+                            item.style.display = 'block';
+                            setTimeout(() => item.classList.add('show'), 10);
+                        } else {
+                            item.classList.remove('show');
+                            setTimeout(() => item.style.display = 'none', 300);
+                        }
+                    });
+
+                    // Scroll to top smoothly
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+
                 filterButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const filterValue = button.getAttribute('data-filter');
+                        applyFilter(filterValue);
+                    });
+                });
 
-                        // Update active button
-                        filterButtons.forEach(btn => btn.classList.remove('active'));
-                        button.classList.add('active');
-
-                        // Filter gallery items
-                        allGalleryItems.forEach(item => {
-                            const category = item.getAttribute('data-category');
-
-                            if (filterValue === 'all' || category === filterValue) {
-                                item.style.display = 'block';
-                                setTimeout(() => item.classList.add('show'), 10);
-                            } else {
-                                item.classList.remove('show');
-                                setTimeout(() => item.style.display = 'none', 300);
-                            }
-                        });
+                // Make gallery items clickable to filter by category
+                allGalleryItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const category = item.getAttribute('data-category');
+                        applyFilter(category);
                     });
                 });
             })
