@@ -22,6 +22,19 @@
             <!-- Buttons will be dynamically generated -->
         </div>
 
+        <div class="notes-section" style="display: none;">
+            <div class="notes-container">
+                <h2 class="notes-title"></h2>
+                <div class="notes-controls">
+                    <button class="notes-edit-btn">Edit Notes</button>
+                    <button class="notes-save-btn" style="display: none;">Save</button>
+                    <button class="notes-cancel-btn" style="display: none;">Cancel</button>
+                </div>
+                <div class="notes-display"></div>
+                <textarea class="notes-textarea" style="display: none;" placeholder="Add notes about this category..."></textarea>
+            </div>
+        </div>
+
         <div class="gallery">
             <!-- Gallery items will be dynamically generated from gallery-data.json -->
         </div>
@@ -36,6 +49,85 @@
         const galleryContainer = document.querySelector('.gallery');
         const filterButtonsContainer = document.querySelector('.filter-buttons');
         let allGalleryItems = [];
+
+        // Notes functionality
+        const notesSection = document.querySelector('.notes-section');
+        const notesTitle = document.querySelector('.notes-title');
+        const notesDisplay = document.querySelector('.notes-display');
+        const notesTextarea = document.querySelector('.notes-textarea');
+        const notesEditBtn = document.querySelector('.notes-edit-btn');
+        const notesSaveBtn = document.querySelector('.notes-save-btn');
+        const notesCancelBtn = document.querySelector('.notes-cancel-btn');
+        let categoryNotes = {};
+        let currentCategory = null;
+
+        // Load notes from localStorage
+        const loadNotes = () => {
+            const savedNotes = localStorage.getItem('categoryNotes');
+            if (savedNotes) {
+                categoryNotes = JSON.parse(savedNotes);
+            }
+        };
+
+        // Save notes to localStorage
+        const saveNotes = () => {
+            localStorage.setItem('categoryNotes', JSON.stringify(categoryNotes));
+        };
+
+        // Display notes for current category
+        const displayNotes = (category) => {
+            currentCategory = category;
+            if (category === 'all') {
+                notesSection.style.display = 'none';
+                return;
+            }
+
+            notesSection.style.display = 'block';
+            const displayName = category.split('_').map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+            notesTitle.textContent = `${displayName} Notes`;
+
+            const notes = categoryNotes[category] || '';
+            if (notes) {
+                notesDisplay.innerHTML = notes.replace(/\n/g, '<br>');
+                notesDisplay.style.display = 'block';
+            } else {
+                notesDisplay.innerHTML = '<em>No notes yet. Click "Edit Notes" to add some.</em>';
+                notesDisplay.style.display = 'block';
+            }
+            notesTextarea.style.display = 'none';
+            notesEditBtn.style.display = 'inline-block';
+            notesSaveBtn.style.display = 'none';
+            notesCancelBtn.style.display = 'none';
+        };
+
+        // Edit notes
+        notesEditBtn.addEventListener('click', () => {
+            const notes = categoryNotes[currentCategory] || '';
+            notesTextarea.value = notes;
+            notesDisplay.style.display = 'none';
+            notesTextarea.style.display = 'block';
+            notesEditBtn.style.display = 'none';
+            notesSaveBtn.style.display = 'inline-block';
+            notesCancelBtn.style.display = 'inline-block';
+            notesTextarea.focus();
+        });
+
+        // Save notes
+        notesSaveBtn.addEventListener('click', () => {
+            categoryNotes[currentCategory] = notesTextarea.value;
+            saveNotes();
+            displayNotes(currentCategory);
+        });
+
+        // Cancel edit
+        notesCancelBtn.addEventListener('click', () => {
+            displayNotes(currentCategory);
+        });
+
+        // Load notes on startup
+        loadNotes();
 
         // Fetch gallery data
         fetch('gallery-data.json')
@@ -116,6 +208,9 @@
                             history.pushState(null, null, `#${filterValue}`);
                         }
                     }
+
+                    // Display notes for the selected category
+                    displayNotes(filterValue);
 
                     // Scroll to top smoothly
                     window.scrollTo({ top: 0, behavior: 'smooth' });

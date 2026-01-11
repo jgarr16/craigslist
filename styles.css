@@ -73,6 +73,100 @@ main {
     transform: translateY(0);
 }
 
+.notes-section {
+    margin-bottom: 2rem;
+}
+
+.notes-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.notes-title {
+    color: #667eea;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.notes-controls {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.notes-edit-btn,
+.notes-save-btn,
+.notes-cancel-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.notes-edit-btn:hover,
+.notes-save-btn:hover,
+.notes-cancel-btn:hover {
+    background: #f0f0ff;
+    transform: translateY(-1px);
+}
+
+.notes-save-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.notes-save-btn:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+}
+
+.notes-cancel-btn {
+    border-color: #999;
+    color: #666;
+}
+
+.notes-cancel-btn:hover {
+    background: #f5f5f5;
+}
+
+.notes-display {
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 6px;
+    min-height: 60px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.notes-display em {
+    color: #999;
+}
+
+.notes-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.notes-textarea:focus {
+    border-color: #667eea;
+}
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
