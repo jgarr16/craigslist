@@ -148,6 +148,33 @@
                     item.appendChild(indicator);
                 }
             });
+
+            // Update button indicators
+            updateButtonIndicators();
+        };
+
+        // Update want indicators on filter buttons
+        const updateButtonIndicators = () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                const category = btn.getAttribute('data-filter');
+                if (category === 'all') return; // Skip the "All" button
+
+                const indicator = btn.querySelector('.btn-indicator');
+                if (indicator) {
+                    const status = categoryWantStatus[category];
+                    if (status === 'want') {
+                        indicator.textContent = '✓';
+                        indicator.className = 'btn-indicator want';
+                    } else if (status === 'dont-want') {
+                        indicator.textContent = '✗';
+                        indicator.className = 'btn-indicator dont-want';
+                    } else {
+                        indicator.textContent = '';
+                        indicator.className = 'btn-indicator';
+                    }
+                }
+            });
         };
 
         // Update want toggle buttons
@@ -285,10 +312,18 @@
                     const button = document.createElement('button');
                     button.className = 'filter-btn';
                     button.setAttribute('data-filter', category);
-                    // Convert "washer_dryer" to "Washer Dryer" for display
-                    button.textContent = category.split('_').map(word =>
+
+                    // Add indicator span
+                    const indicator = document.createElement('span');
+                    indicator.className = 'btn-indicator';
+                    button.appendChild(indicator);
+
+                    // Add text node
+                    const text = document.createTextNode(category.split('_').map(word =>
                         word.charAt(0).toUpperCase() + word.slice(1)
-                    ).join(' ');
+                    ).join(' '));
+                    button.appendChild(text);
+
                     filterButtonsContainer.appendChild(button);
                 });
 

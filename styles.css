@@ -55,6 +55,26 @@ main {
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn .btn-indicator {
+    font-size: 0.85rem;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-btn .btn-indicator.want {
+    color: #22c55e;
+}
+
+.filter-btn .btn-indicator.dont-want {
+    color: #ef4444;
 }
 
 .filter-btn:hover {
