@@ -1,5 +1,11 @@
 [
   {
+    "filename": "craigslist_blender_1.jpg",
+    "category": "blender",
+    "number": 1,
+    "alt": "Blender 1"
+  },
+  {
     "filename": "craigslist_chinese_cabinet_1.jpg",
     "category": "chinese_cabinet",
     "number": 1,
