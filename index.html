@@ -26,6 +26,15 @@
             <!-- Buttons will be dynamically generated -->
         </div>
 
+        <div class="want-toggle" style="display: none;">
+            <div class="want-toggle-label">Do you want this?</div>
+            <div class="want-toggle-buttons">
+                <button class="want-toggle-btn" data-status="want">✓ Want</button>
+                <button class="want-toggle-btn" data-status="dont-want">✗ Don't Want</button>
+                <button class="want-toggle-btn" data-status="undecided">Clear</button>
+            </div>
+        </div>
+
         <div class="notes-section" style="display: none;">
             <div class="notes-container">
                 <h2 class="notes-title"></h2>
@@ -80,6 +89,11 @@
         let categoryNotes = {};
         let currentCategory = null;
 
+        // Want/Don't Want functionality
+        const wantToggle = document.querySelector('.want-toggle');
+        const wantToggleButtons = document.querySelectorAll('.want-toggle-btn');
+        let categoryWantStatus = {};
+
         // Load notes from Firebase
         const loadNotes = () => {
             database.ref('categoryNotes').on('value', (snapshot) => {
@@ -95,6 +109,76 @@
         const saveNotes = () => {
             database.ref('categoryNotes').set(categoryNotes);
         };
+
+        // Load want status from Firebase
+        const loadWantStatus = () => {
+            database.ref('categoryWantStatus').on('value', (snapshot) => {
+                categoryWantStatus = snapshot.val() || {};
+                updateAllWantIndicators();
+                if (currentCategory && currentCategory !== 'all') {
+                    updateWantToggle(currentCategory);
+                }
+            });
+        };
+
+        // Save want status to Firebase
+        const saveWantStatus = () => {
+            database.ref('categoryWantStatus').set(categoryWantStatus);
+        };
+
+        // Update want indicators on all gallery items
+        const updateAllWantIndicators = () => {
+            allGalleryItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                const status = categoryWantStatus[category];
+
+                // Remove existing indicator
+                const existingIndicator = item.querySelector('.want-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+
+                // Add indicator if status is set
+                if (status && (status === 'want' || status === 'dont-want')) {
+                    const indicator = document.createElement('div');
+                    indicator.className = `want-indicator ${status}`;
+                    indicator.textContent = status === 'want' ? '✓' : '✗';
+                    // Initially hide, will be shown by applyFilter if on "all" view
+                    indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
+                    item.appendChild(indicator);
+                }
+            });
+        };
+
+        // Update want toggle buttons
+        const updateWantToggle = (category) => {
+            const status = categoryWantStatus[category] || 'undecided';
+            wantToggleButtons.forEach(btn => {
+                const btnStatus = btn.getAttribute('data-status');
+                if (btnStatus === status) {
+                    btn.classList.add('active', status);
+                } else {
+                    btn.classList.remove('active', 'want', 'dont-want', 'undecided');
+                }
+            });
+        };
+
+        // Handle want toggle button clicks
+        wantToggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const status = btn.getAttribute('data-status');
+                if (currentCategory && currentCategory !== 'all') {
+                    if (status === 'undecided') {
+                        delete categoryWantStatus[currentCategory];
+                    } else {
+                        categoryWantStatus[currentCategory] = status;
+                    }
+                    saveWantStatus();
+                    updateWantToggle(currentCategory);
+                    updateAllWantIndicators();
+                }
+            });
+        });
 
         // Display notes for current category
         const displayNotes = (category) => {
@@ -148,8 +232,9 @@
             displayNotes(currentCategory);
         });
 
-        // Load notes on startup
+        // Load notes and want status on startup
         loadNotes();
+        loadWantStatus();
 
         // Fetch gallery data
         fetch(`gallery-data.json?v=${Date.now()}`)
@@ -225,6 +310,7 @@
                         const category = item.getAttribute('data-category');
                         const number = item.getAttribute('data-number');
                         const overlay = item.querySelector('.category-overlay');
+                        const indicator = item.querySelector('.want-indicator');
 
                         if (filterValue === 'all') {
                             // Only show first image of each category
@@ -232,6 +318,7 @@
                                 item.style.display = 'block';
                                 setTimeout(() => item.classList.add('show'), 10);
                                 if (overlay) overlay.style.display = 'block';
+                                if (indicator) indicator.style.display = 'flex';
                             } else {
                                 item.classList.remove('show');
                                 setTimeout(() => item.style.display = 'none', 300);
@@ -240,11 +327,20 @@
                             item.style.display = 'block';
                             setTimeout(() => item.classList.add('show'), 10);
                             if (overlay) overlay.style.display = 'none';
+                            if (indicator) indicator.style.display = 'none';
                         } else {
                             item.classList.remove('show');
                             setTimeout(() => item.style.display = 'none', 300);
                         }
                     });
+
+                    // Show/hide want toggle
+                    if (filterValue === 'all') {
+                        wantToggle.style.display = 'none';
+                    } else {
+                        wantToggle.style.display = 'flex';
+                        updateWantToggle(filterValue);
+                    }
 
                     // Update URL hash for shareable links
                     if (updateUrl) {
