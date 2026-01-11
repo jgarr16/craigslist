@@ -27,8 +27,9 @@
         </div>
 
         <div class="want-toggle" style="display: none;">
-            <div class="want-toggle-label">Do you want this?</div>
+            <div class="want-toggle-label">Mark this item:</div>
             <div class="want-toggle-buttons">
+                <button class="want-toggle-btn" data-status="new">NEW</button>
                 <button class="want-toggle-btn" data-status="want">✓ Want</button>
                 <button class="want-toggle-btn" data-status="dont-want">✗ Don't Want</button>
                 <button class="want-toggle-btn" data-status="undecided">Clear</button>
@@ -93,7 +94,6 @@
         const wantToggle = document.querySelector('.want-toggle');
         const wantToggleButtons = document.querySelectorAll('.want-toggle-btn');
         let categoryWantStatus = {};
-        let categoryNewStatus = {};
 
         // Load notes from Firebase
         const loadNotes = () => {
@@ -127,28 +127,11 @@
             database.ref('categoryWantStatus').set(categoryWantStatus);
         };
 
-        // Load new status from Firebase
-        const loadNewStatus = () => {
-            database.ref('categoryNewStatus').on('value', (snapshot) => {
-                categoryNewStatus = snapshot.val() || {};
-                updateAllWantIndicators();
-                if (currentCategory && currentCategory !== 'all') {
-                    updateWantToggleNewBadge(currentCategory);
-                }
-            });
-        };
-
-        // Save new status to Firebase
-        const saveNewStatus = () => {
-            database.ref('categoryNewStatus').set(categoryNewStatus);
-        };
-
         // Update want indicators on all gallery items
         const updateAllWantIndicators = () => {
             allGalleryItems.forEach(item => {
                 const category = item.getAttribute('data-category');
                 const status = categoryWantStatus[category];
-                const isNew = categoryNewStatus[category];
 
                 // Remove existing indicator
                 const existingIndicator = item.querySelector('.want-indicator');
@@ -156,19 +139,23 @@
                     existingIndicator.remove();
                 }
 
-                // Show NEW if item is new and hasn't been marked
-                if (isNew && !status) {
+                // Add indicator based on status
+                if (status === 'new') {
                     const indicator = document.createElement('div');
                     indicator.className = 'want-indicator new';
                     indicator.textContent = 'NEW';
                     indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
                     item.appendChild(indicator);
-                }
-                // Otherwise show want/don't want if status is set
-                else if (status && (status === 'want' || status === 'dont-want')) {
+                } else if (status === 'want') {
                     const indicator = document.createElement('div');
-                    indicator.className = `want-indicator ${status}`;
-                    indicator.textContent = status === 'want' ? '✓' : '✗';
+                    indicator.className = 'want-indicator want';
+                    indicator.textContent = '✓';
+                    indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
+                    item.appendChild(indicator);
+                } else if (status === 'dont-want') {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'want-indicator dont-want';
+                    indicator.textContent = '✗';
                     indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
                     item.appendChild(indicator);
                 }
@@ -188,10 +175,8 @@
                 const indicator = btn.querySelector('.btn-indicator');
                 if (indicator) {
                     const status = categoryWantStatus[category];
-                    const isNew = categoryNewStatus[category];
 
-                    // Show NEW if item is new and hasn't been marked
-                    if (isNew && !status) {
+                    if (status === 'new') {
                         indicator.textContent = 'NEW';
                         indicator.className = 'btn-indicator new';
                     } else if (status === 'want') {
@@ -216,30 +201,9 @@
                 if (btnStatus === status) {
                     btn.classList.add('active', status);
                 } else {
-                    btn.classList.remove('active', 'want', 'dont-want', 'undecided');
+                    btn.classList.remove('active', 'want', 'dont-want', 'undecided', 'new');
                 }
             });
-        };
-
-        // Update NEW badge in want toggle
-        const updateWantToggleNewBadge = (category) => {
-            const isNew = categoryNewStatus[category];
-            const status = categoryWantStatus[category];
-
-            // Remove existing badge
-            const existingBadge = wantToggle.querySelector('.new-badge');
-            if (existingBadge) {
-                existingBadge.remove();
-            }
-
-            // Add NEW badge if item is new and hasn't been marked
-            if (isNew && !status) {
-                const label = wantToggle.querySelector('.want-toggle-label');
-                const badge = document.createElement('span');
-                badge.className = 'new-badge';
-                badge.textContent = 'NEW';
-                label.appendChild(badge);
-            }
         };
 
         // Handle want toggle button clicks
@@ -251,15 +215,9 @@
                         delete categoryWantStatus[currentCategory];
                     } else {
                         categoryWantStatus[currentCategory] = status;
-                        // Mark as not new when user makes a selection
-                        if (categoryNewStatus[currentCategory]) {
-                            delete categoryNewStatus[currentCategory];
-                            saveNewStatus();
-                        }
                     }
                     saveWantStatus();
                     updateWantToggle(currentCategory);
-                    updateWantToggleNewBadge(currentCategory);
                     updateAllWantIndicators();
                 }
             });
@@ -317,10 +275,9 @@
             displayNotes(currentCategory);
         });
 
-        // Load notes, want status, and new status on startup
+        // Load notes and want status on startup
         loadNotes();
         loadWantStatus();
-        loadNewStatus();
 
         // Fetch gallery data
         fetch(`gallery-data.json?v=${Date.now()}`)
@@ -434,7 +391,6 @@
                     } else {
                         wantToggle.style.display = 'flex';
                         updateWantToggle(filterValue);
-                        updateWantToggleNewBadge(filterValue);
                     }
 
                     // Update URL hash for shareable links
