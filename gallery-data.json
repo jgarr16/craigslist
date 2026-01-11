@@ -1,5 +1,29 @@
 [
   {
+    "filename": "craigslist_chinese_cabinet_1.jpg",
+    "category": "chinese_cabinet",
+    "number": 1,
+    "alt": "Chinese Cabinet 1"
+  },
+  {
+    "filename": "craigslist_chinese_cabinet_2.jpg",
+    "category": "chinese_cabinet",
+    "number": 2,
+    "alt": "Chinese Cabinet 2"
+  },
+  {
+    "filename": "craigslist_chinese_cabinet_3.jpg",
+    "category": "chinese_cabinet",
+    "number": 3,
+    "alt": "Chinese Cabinet 3"
+  },
+  {
+    "filename": "craigslist_chinese_cabinet_4.jpg",
+    "category": "chinese_cabinet",
+    "number": 4,
+    "alt": "Chinese Cabinet 4"
+  },
+  {
     "filename": "craigslist_elliptical_1.jpg",
     "category": "elliptical",
     "number": 1,
