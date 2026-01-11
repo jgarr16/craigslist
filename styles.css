@@ -77,6 +77,15 @@ main {
     color: #ef4444;
 }
 
+.filter-btn .btn-indicator.new {
+    background: #f97316;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
 .filter-btn:hover {
     background: #f0f0ff;
     transform: translateY(-2px);
@@ -267,6 +276,14 @@ main {
     color: white;
 }
 
+.want-indicator.new {
+    background: #f97316;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 8px;
+}
+
 .want-toggle {
     background: white;
     border-radius: 8px;
@@ -284,6 +301,19 @@ main {
     font-size: 1.2rem;
     font-weight: 600;
     color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.want-toggle-label .new-badge {
+    background: #f97316;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .want-toggle-buttons {
