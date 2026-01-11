@@ -11,6 +11,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="my-favicon/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Fauxlist" />
     <link rel="manifest" href="my-favicon/site.webmanifest" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
     <header>
@@ -45,6 +49,21 @@
     </footer>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqE8YxJ9Z7vN8wF5K3kL2mP9qR4sT6uV8",
+            authDomain: "craigslist-gallery.firebaseapp.com",
+            databaseURL: "https://craigslist-gallery-default-rtdb.firebaseio.com",
+            projectId: "craigslist-gallery",
+            storageBucket: "craigslist-gallery.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Load gallery data and dynamically generate everything
         const galleryContainer = document.querySelector('.gallery');
         const filterButtonsContainer = document.querySelector('.filter-buttons');
@@ -61,17 +80,20 @@
         let categoryNotes = {};
         let currentCategory = null;
 
-        // Load notes from localStorage
+        // Load notes from Firebase
         const loadNotes = () => {
-            const savedNotes = localStorage.getItem('categoryNotes');
-            if (savedNotes) {
-                categoryNotes = JSON.parse(savedNotes);
-            }
+            database.ref('categoryNotes').on('value', (snapshot) => {
+                categoryNotes = snapshot.val() || {};
+                // Refresh the current category display if one is selected
+                if (currentCategory && currentCategory !== 'all') {
+                    displayNotes(currentCategory);
+                }
+            });
         };
 
-        // Save notes to localStorage
+        // Save notes to Firebase
         const saveNotes = () => {
-            localStorage.setItem('categoryNotes', JSON.stringify(categoryNotes));
+            database.ref('categoryNotes').set(categoryNotes);
         };
 
         // Display notes for current category
