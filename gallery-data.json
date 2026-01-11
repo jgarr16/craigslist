@@ -108,6 +108,30 @@
     "alt": "Treadmill 2"
   },
   {
+    "filename": "craigslist_wall_hanging_1.jpg",
+    "category": "wall_hanging",
+    "number": 1,
+    "alt": "Wall Hanging 1"
+  },
+  {
+    "filename": "craigslist_wall_hanging_2.jpg",
+    "category": "wall_hanging",
+    "number": 2,
+    "alt": "Wall Hanging 2"
+  },
+  {
+    "filename": "craigslist_wall_hanging_3.jpg",
+    "category": "wall_hanging",
+    "number": 3,
+    "alt": "Wall Hanging 3"
+  },
+  {
+    "filename": "craigslist_wall_hanging_4.jpg",
+    "category": "wall_hanging",
+    "number": 4,
+    "alt": "Wall Hanging 4"
+  },
+  {
     "filename": "craigslist_washer_dryer_1.png",
     "category": "washer_dryer",
     "number": 1,
