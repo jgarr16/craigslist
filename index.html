@@ -130,7 +130,7 @@
         loadNotes();
 
         // Fetch gallery data
-        fetch('gallery-data.json')
+        fetch(`gallery-data.json?v=${Date.now()}`)
             .then(response => response.json())
             .then(galleryData => {
                 // Generate gallery items
