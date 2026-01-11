@@ -1,5 +1,23 @@
 [
   {
+    "filename": "craigslist_elliptical_1.jpg",
+    "category": "elliptical",
+    "number": 1,
+    "alt": "Elliptical 1"
+  },
+  {
+    "filename": "craigslist_elliptical_2.jpg",
+    "category": "elliptical",
+    "number": 2,
+    "alt": "Elliptical 2"
+  },
+  {
+    "filename": "craigslist_elliptical_3.jpg",
+    "category": "elliptical",
+    "number": 3,
+    "alt": "Elliptical 3"
+  },
+  {
     "filename": "craigslist_home_gym_1.jpg",
     "category": "home_gym",
     "number": 1,
@@ -58,6 +76,24 @@
     "category": "nine_foot_mirror",
     "number": 4,
     "alt": "Nine Foot Mirror 4"
+  },
+  {
+    "filename": "craigslist_nine_foot_mirror_5.jpg",
+    "category": "nine_foot_mirror",
+    "number": 5,
+    "alt": "Nine Foot Mirror 5"
+  },
+  {
+    "filename": "craigslist_nine_foot_mirror_6.jpg",
+    "category": "nine_foot_mirror",
+    "number": 6,
+    "alt": "Nine Foot Mirror 6"
+  },
+  {
+    "filename": "craigslist_nine_foot_mirror_7.jpg",
+    "category": "nine_foot_mirror",
+    "number": 7,
+    "alt": "Nine Foot Mirror 7"
   },
   {
     "filename": "craigslist_treadmill_1.png",
