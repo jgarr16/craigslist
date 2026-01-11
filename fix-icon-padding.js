@@ -47,9 +47,9 @@ async function processIcon(filePath) {
         const image = sharp(fullPath);
         const metadata = await image.metadata();
         
-        // Scale factor: 1.6x means we zoom in 60% more, making the icon content larger
-        // This reduces the visual padding effect
-        const scaleFactor = 1.6;
+        // Scale factor: 2.5x means we zoom in 150% more, making the icon content much larger
+        // This significantly reduces the visual padding effect
+        const scaleFactor = 2.5;
         const scaledWidth = Math.round(metadata.width * scaleFactor);
         const scaledHeight = Math.round(metadata.height * scaleFactor);
         
@@ -96,8 +96,8 @@ async function processIcon(filePath) {
 
 async function main() {
     console.log('This script will zoom in on the icon content to reduce padding.\n');
-    console.log('It scales up the icon by 1.6x and crops to center, making the');
-    console.log('icon design appear larger on iPhone home screens.\n');
+    console.log('It scales up the icon by 2.5x and crops to center, making the');
+    console.log('icon design appear much larger on iPhone home screens.\n');
     
     try {
         for (const file of ICON_FILES) {
