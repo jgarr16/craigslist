@@ -140,7 +140,7 @@
                     galleryItem.setAttribute('data-category', item.category);
 
                     const img = document.createElement('img');
-                    img.src = `images/${item.filename}`;
+                    img.src = `images/${item.filename}?v=${Date.now()}`;
                     img.alt = item.alt;
 
                     galleryItem.appendChild(img);
