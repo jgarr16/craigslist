@@ -1,0 +1,24 @@
+{
+  "name": "craigslist",
+  "version": "1.0.0",
+  "description": "A simple, automated gallery website for displaying Craigslist listings.",
+  "main": "fix-icon-padding.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgarr16/craigslist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jgarr16/craigslist/issues"
+  },
+  "homepage": "https://github.com/jgarr16/craigslist#readme",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}
