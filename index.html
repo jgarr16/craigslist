@@ -138,12 +138,23 @@
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item show';
                     galleryItem.setAttribute('data-category', item.category);
+                    galleryItem.setAttribute('data-number', item.number);
 
                     const img = document.createElement('img');
                     img.src = `images/${item.filename}?v=${Date.now()}`;
                     img.alt = item.alt;
 
                     galleryItem.appendChild(img);
+
+                    // Add category overlay (will only be visible in "all" view)
+                    const overlay = document.createElement('div');
+                    overlay.className = 'category-overlay';
+                    const displayName = item.category.split('_').map(word =>
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
+                    overlay.textContent = displayName;
+                    galleryItem.appendChild(overlay);
+
                     galleryContainer.appendChild(galleryItem);
                 });
 
@@ -190,10 +201,23 @@
                     // Filter gallery items
                     allGalleryItems.forEach(item => {
                         const category = item.getAttribute('data-category');
+                        const number = item.getAttribute('data-number');
+                        const overlay = item.querySelector('.category-overlay');
 
-                        if (filterValue === 'all' || category === filterValue) {
+                        if (filterValue === 'all') {
+                            // Only show first image of each category
+                            if (number === '1') {
+                                item.style.display = 'block';
+                                setTimeout(() => item.classList.add('show'), 10);
+                                if (overlay) overlay.style.display = 'block';
+                            } else {
+                                item.classList.remove('show');
+                                setTimeout(() => item.style.display = 'none', 300);
+                            }
+                        } else if (category === filterValue) {
                             item.style.display = 'block';
                             setTimeout(() => item.classList.add('show'), 10);
+                            if (overlay) overlay.style.display = 'none';
                         } else {
                             item.classList.remove('show');
                             setTimeout(() => item.style.display = 'none', 300);
