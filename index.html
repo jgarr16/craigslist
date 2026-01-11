@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Craigslist Washer & Dryer Gallery</title>
+    <title>Fauxlist Gallery</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="my-favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="my-favicon/favicon.svg" />
@@ -55,7 +55,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Fauxlist Gallery</p>
+        <p>&copy; <span id="copyright-year"></span> Fauxlist Gallery</p>
     </footer>
 
     <script>
@@ -71,8 +71,15 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        let database;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            // Continue without Firebase functionality
+            database = null;
+        }
 
         // Load gallery data and dynamically generate everything
         const galleryContainer = document.querySelector('.gallery');
@@ -97,34 +104,74 @@
 
         // Load notes from Firebase
         const loadNotes = () => {
+            if (!database) {
+                console.warn('Firebase not initialized. Notes will not be saved.');
+                return;
+            }
             database.ref('categoryNotes').on('value', (snapshot) => {
-                categoryNotes = snapshot.val() || {};
-                // Refresh the current category display if one is selected
-                if (currentCategory && currentCategory !== 'all') {
-                    displayNotes(currentCategory);
+                try {
+                    categoryNotes = snapshot.val() || {};
+                    // Refresh the current category display if one is selected
+                    if (currentCategory && currentCategory !== 'all') {
+                        displayNotes(currentCategory);
+                    }
+                } catch (error) {
+                    console.error('Error loading notes:', error);
+                    categoryNotes = {};
                 }
+            }, (error) => {
+                console.error('Firebase error loading notes:', error);
+                categoryNotes = {};
             });
         };
 
         // Save notes to Firebase
         const saveNotes = () => {
-            database.ref('categoryNotes').set(categoryNotes);
+            if (!database) {
+                console.warn('Firebase not initialized. Notes will not be saved.');
+                return;
+            }
+            try {
+                database.ref('categoryNotes').set(categoryNotes);
+            } catch (error) {
+                console.error('Error saving notes:', error);
+            }
         };
 
         // Load want status from Firebase
         const loadWantStatus = () => {
+            if (!database) {
+                console.warn('Firebase not initialized. Want status will not be saved.');
+                return;
+            }
             database.ref('categoryWantStatus').on('value', (snapshot) => {
-                categoryWantStatus = snapshot.val() || {};
-                updateAllWantIndicators();
-                if (currentCategory && currentCategory !== 'all') {
-                    updateWantToggle(currentCategory);
+                try {
+                    categoryWantStatus = snapshot.val() || {};
+                    updateAllWantIndicators();
+                    if (currentCategory && currentCategory !== 'all') {
+                        updateWantToggle(currentCategory);
+                    }
+                } catch (error) {
+                    console.error('Error loading want status:', error);
+                    categoryWantStatus = {};
                 }
+            }, (error) => {
+                console.error('Firebase error loading want status:', error);
+                categoryWantStatus = {};
             });
         };
 
         // Save want status to Firebase
         const saveWantStatus = () => {
-            database.ref('categoryWantStatus').set(categoryWantStatus);
+            if (!database) {
+                console.warn('Firebase not initialized. Want status will not be saved.');
+                return;
+            }
+            try {
+                database.ref('categoryWantStatus').set(categoryWantStatus);
+            } catch (error) {
+                console.error('Error saving want status:', error);
+            }
         };
 
         // Update want indicators on all gallery items
@@ -223,6 +270,33 @@
             });
         });
 
+        // Escape HTML to prevent XSS attacks
+        const escapeHtml = (text) => {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        };
+
+        // Safely render notes with line breaks
+        const renderNotes = (container, text) => {
+            container.innerHTML = ''; // Clear container
+            if (!text || text.trim() === '') {
+                const em = document.createElement('em');
+                em.textContent = 'No notes yet. Click "Edit Notes" to add some.';
+                container.appendChild(em);
+            } else {
+                // Split by newlines and create text nodes with br elements
+                const lines = text.split('\n');
+                lines.forEach((line, index) => {
+                    if (index > 0) {
+                        container.appendChild(document.createElement('br'));
+                    }
+                    const textNode = document.createTextNode(line);
+                    container.appendChild(textNode);
+                });
+            }
+        };
+
         // Display notes for current category
         const displayNotes = (category) => {
             currentCategory = category;
@@ -238,13 +312,8 @@
             notesTitle.textContent = `${displayName} Notes`;
 
             const notes = categoryNotes[category] || '';
-            if (notes) {
-                notesDisplay.innerHTML = notes.replace(/\n/g, '<br>');
-                notesDisplay.style.display = 'block';
-            } else {
-                notesDisplay.innerHTML = '<em>No notes yet. Click "Edit Notes" to add some.</em>';
-                notesDisplay.style.display = 'block';
-            }
+            renderNotes(notesDisplay, notes);
+            notesDisplay.style.display = 'block';
             notesTextarea.style.display = 'none';
             notesEditBtn.style.display = 'inline-block';
             notesSaveBtn.style.display = 'none';
@@ -279,9 +348,17 @@
         loadNotes();
         loadWantStatus();
 
+        // Set copyright year
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
         // Fetch gallery data
-        fetch(`gallery-data.json?v=${Date.now()}`)
-            .then(response => response.json())
+        fetch(`gallery-data.json`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(galleryData => {
                 // Generate gallery items
                 galleryData.forEach(item => {
@@ -291,8 +368,9 @@
                     galleryItem.setAttribute('data-number', item.number);
 
                     const img = document.createElement('img');
-                    img.src = `images/${item.filename}?v=${Date.now()}`;
+                    img.src = `images/${item.filename}`;
                     img.alt = item.alt;
+                    img.loading = 'lazy'; // Enable lazy loading
 
                     galleryItem.appendChild(img);
 
@@ -447,7 +525,7 @@
             })
             .catch(error => {
                 console.error('Error loading gallery data:', error);
-                galleryContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">Error loading gallery. Please run generate-gallery.js script.</p>';
+                galleryContainer.innerHTML = '<p style="text-align: center; padding: 2rem; color: #ef4444;">Error loading gallery. Please check your connection and ensure gallery-data.json exists. If the problem persists, run generate-gallery.js script.</p>';
             });
     </script>
 </body>
