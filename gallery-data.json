@@ -132,6 +132,24 @@
     "alt": "Samsung Tv 1"
   },
   {
+    "filename": "craigslist_toaster_oven_1.png",
+    "category": "toaster_oven",
+    "number": 1,
+    "alt": "Toaster Oven 1"
+  },
+  {
+    "filename": "craigslist_toaster_oven_2.png",
+    "category": "toaster_oven",
+    "number": 2,
+    "alt": "Toaster Oven 2"
+  },
+  {
+    "filename": "craigslist_tools_1.png",
+    "category": "tools",
+    "number": 1,
+    "alt": "Tools 1"
+  },
+  {
     "filename": "craigslist_treadmill_1.png",
     "category": "treadmill",
     "number": 1,
