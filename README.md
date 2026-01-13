@@ -1,4 +1,4 @@
-# Fauxlist Gallery
+# Craigslist-ish Gallery
 
 A simple, automated gallery website for displaying Craigslist listings.
 
