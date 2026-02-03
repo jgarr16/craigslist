@@ -51,6 +51,11 @@ images/craigslist_office_chair_1.png     → Category: Office Chair
 - `generate-gallery.js` - Script that scans images and generates gallery data
 - `gallery-data.json` - Auto-generated file containing all gallery items
 - `images/` - Your Craigslist listing images
+- `database.rules.json` - Firebase Realtime Database security rules (used for notes and want status)
+
+## Firebase Realtime Database Rules
+
+The app stores category notes and want/don't-want status in Firebase. To avoid access expiring (Test Mode), set Realtime Database rules in the [Firebase Console](https://console.firebase.google.com/) → **Build** → **Realtime Database** → **Rules**. Use the contents of `database.rules.json` so only `categoryNotes` and `categoryWantStatus` are readable/writable; all other paths are denied.
 
 ## Live Site
 

@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "categoryNotes": {
+      ".read": true,
+      ".write": true
+    },
+    "categoryWantStatus": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
