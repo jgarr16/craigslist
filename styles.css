@@ -86,6 +86,10 @@ main {
     font-weight: 700;
 }
 
+.filter-btn .btn-indicator.given {
+    color: #8b5cf6;
+}
+
 .filter-btn:hover {
     background: #f0f0ff;
     transform: translateY(-2px);
@@ -284,6 +288,11 @@ main {
     padding: 0 8px;
 }
 
+.want-indicator.given {
+    background: #8b5cf6;
+    color: white;
+}
+
 .want-toggle {
     background: white;
     border-radius: 8px;
@@ -347,6 +356,12 @@ main {
 .want-toggle-btn.active.new {
     background: #f97316;
     border-color: #f97316;
+    color: white;
+}
+
+.want-toggle-btn.active.given {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
     color: white;
 }
 

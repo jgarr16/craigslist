@@ -36,6 +36,7 @@
                 <button class="want-toggle-btn" data-status="new">NEW</button>
                 <button class="want-toggle-btn" data-status="want">✓ Want</button>
                 <button class="want-toggle-btn" data-status="dont-want">✗ Don't Want</button>
+                <button class="want-toggle-btn" data-status="given">★ Given</button>
                 <button class="want-toggle-btn" data-status="undecided">Clear</button>
             </div>
         </div>
@@ -209,6 +210,12 @@
                     indicator.textContent = '✗';
                     indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
                     item.appendChild(indicator);
+                } else if (status === 'given') {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'want-indicator given';
+                    indicator.textContent = '★';
+                    indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
+                    item.appendChild(indicator);
                 }
             });
 
@@ -236,6 +243,9 @@
                     } else if (status === 'dont-want') {
                         indicator.textContent = '✗';
                         indicator.className = 'btn-indicator dont-want';
+                    } else if (status === 'given') {
+                        indicator.textContent = '★';
+                        indicator.className = 'btn-indicator given';
                     } else {
                         indicator.textContent = '';
                         indicator.className = 'btn-indicator';
@@ -252,7 +262,7 @@
                 if (btnStatus === status) {
                     btn.classList.add('active', status);
                 } else {
-                    btn.classList.remove('active', 'want', 'dont-want', 'undecided', 'new');
+                    btn.classList.remove('active', 'want', 'dont-want', 'undecided', 'new', 'given');
                 }
             });
         };
