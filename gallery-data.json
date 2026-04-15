@@ -1,11 +1,5 @@
 [
   {
-    "filename": "craigslist_blender_1.jpg",
-    "category": "blender",
-    "number": 1,
-    "alt": "Blender 1"
-  },
-  {
     "filename": "craigslist_chinese_cabinet_1.jpg",
     "category": "chinese_cabinet",
     "number": 1,
@@ -30,108 +24,6 @@
     "alt": "Chinese Cabinet 4"
   },
   {
-    "filename": "craigslist_elliptical_1.jpg",
-    "category": "elliptical",
-    "number": 1,
-    "alt": "Elliptical 1"
-  },
-  {
-    "filename": "craigslist_elliptical_2.jpg",
-    "category": "elliptical",
-    "number": 2,
-    "alt": "Elliptical 2"
-  },
-  {
-    "filename": "craigslist_elliptical_3.jpg",
-    "category": "elliptical",
-    "number": 3,
-    "alt": "Elliptical 3"
-  },
-  {
-    "filename": "craigslist_home_gym_1.jpg",
-    "category": "home_gym",
-    "number": 1,
-    "alt": "Home Gym 1"
-  },
-  {
-    "filename": "craigslist_home_gym_2.jpg",
-    "category": "home_gym",
-    "number": 2,
-    "alt": "Home Gym 2"
-  },
-  {
-    "filename": "craigslist_home_gym_3.jpg",
-    "category": "home_gym",
-    "number": 3,
-    "alt": "Home Gym 3"
-  },
-  {
-    "filename": "craigslist_home_gym_4.jpg",
-    "category": "home_gym",
-    "number": 4,
-    "alt": "Home Gym 4"
-  },
-  {
-    "filename": "craigslist_home_gym_5.png",
-    "category": "home_gym",
-    "number": 5,
-    "alt": "Home Gym 5"
-  },
-  {
-    "filename": "craigslist_home_gym_6.png",
-    "category": "home_gym",
-    "number": 6,
-    "alt": "Home Gym 6"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_1.png",
-    "category": "nine_foot_mirror",
-    "number": 1,
-    "alt": "Nine Foot Mirror 1"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_2.png",
-    "category": "nine_foot_mirror",
-    "number": 2,
-    "alt": "Nine Foot Mirror 2"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_3.png",
-    "category": "nine_foot_mirror",
-    "number": 3,
-    "alt": "Nine Foot Mirror 3"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_4.png",
-    "category": "nine_foot_mirror",
-    "number": 4,
-    "alt": "Nine Foot Mirror 4"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_5.jpg",
-    "category": "nine_foot_mirror",
-    "number": 5,
-    "alt": "Nine Foot Mirror 5"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_6.jpg",
-    "category": "nine_foot_mirror",
-    "number": 6,
-    "alt": "Nine Foot Mirror 6"
-  },
-  {
-    "filename": "craigslist_nine_foot_mirror_7.jpg",
-    "category": "nine_foot_mirror",
-    "number": 7,
-    "alt": "Nine Foot Mirror 7"
-  },
-  {
-    "filename": "craigslist_samsung_tv_1.jpg",
-    "category": "samsung_tv",
-    "number": 1,
-    "alt": "Samsung Tv 1"
-  },
-  {
     "filename": "craigslist_toaster_oven_1.png",
     "category": "toaster_oven",
     "number": 1,
@@ -148,18 +40,6 @@
     "category": "tools",
     "number": 1,
     "alt": "Tools 1"
-  },
-  {
-    "filename": "craigslist_treadmill_1.png",
-    "category": "treadmill",
-    "number": 1,
-    "alt": "Treadmill 1"
-  },
-  {
-    "filename": "craigslist_treadmill_2.png",
-    "category": "treadmill",
-    "number": 2,
-    "alt": "Treadmill 2"
   },
   {
     "filename": "craigslist_wall_hanging_1.jpg",
@@ -184,41 +64,5 @@
     "category": "wall_hanging",
     "number": 4,
     "alt": "Wall Hanging 4"
-  },
-  {
-    "filename": "craigslist_washer_dryer_1.png",
-    "category": "washer_dryer",
-    "number": 1,
-    "alt": "Washer Dryer 1"
-  },
-  {
-    "filename": "craigslist_washer_dryer_2.png",
-    "category": "washer_dryer",
-    "number": 2,
-    "alt": "Washer Dryer 2"
-  },
-  {
-    "filename": "craigslist_washer_dryer_3.png",
-    "category": "washer_dryer",
-    "number": 3,
-    "alt": "Washer Dryer 3"
-  },
-  {
-    "filename": "craigslist_washer_dryer_4.png",
-    "category": "washer_dryer",
-    "number": 4,
-    "alt": "Washer Dryer 4"
-  },
-  {
-    "filename": "craigslist_washer_dryer_5.png",
-    "category": "washer_dryer",
-    "number": 5,
-    "alt": "Washer Dryer 5"
-  },
-  {
-    "filename": "craigslist_washer_dryer_6.png",
-    "category": "washer_dryer",
-    "number": 6,
-    "alt": "Washer Dryer 6"
   }
 ]

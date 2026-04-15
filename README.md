@@ -86,3 +86,25 @@ Use the in-app controls to keep track of items that are already resolved:
 - Turn on **Show delivered items** to review resolved categories or undo a status.
 
 This gives you a lightweight way to identify what should "go away" without deleting files immediately.
+
+## Archive Delivered Categories (Actual Removal)
+
+When you are ready to actually remove delivered categories from active inventory:
+
+1. Mark categories as **Delivered** in the app.
+2. Run:
+   ```bash
+   npm run archive-delivered
+   ```
+3. Commit and push.
+
+What this script does:
+- Reads `categoryWantStatus` from Firebase.
+- Finds categories with status `delivered`.
+- Moves matching images from `images/` to `images/archive/[category]/`.
+- Regenerates `gallery-data.json` so delivered categories are no longer shown.
+
+Helpful options:
+- Preview only (no file changes): `npm run archive-delivered:dry`
+- Also clear delivered statuses in Firebase after archive:
+  `node archive-delivered.js --clear-status`
