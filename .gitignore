@@ -8,3 +8,9 @@ package-lock.json
 
 # OS files
 .DS_Store
+
+# Local assistant/tooling files
+.claude/
+
+# Local helper script (kept for manual process)
+fix-filenames.sh
