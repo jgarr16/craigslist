@@ -39,6 +39,7 @@ main {
 .filter-buttons {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     gap: 1rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
@@ -58,7 +59,10 @@ main {
     position: relative;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    min-height: 44px;
+    white-space: nowrap;
 }
 
 .filter-btn .btn-indicator {
@@ -406,16 +410,71 @@ footer {
     }
 
     .filter-buttons {
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: 100%;
     }
 
     .filter-btn {
-        padding: 0.6rem 1.2rem;
+        width: 100%;
+        min-height: 48px;
+        padding: 0.7rem 0.8rem;
+        font-size: 0.9rem;
+        border-radius: 14px;
+        gap: 0.45rem;
+    }
+
+    .filter-btn .btn-indicator.new,
+    .filter-btn .btn-indicator.delivered {
+        font-size: 0.65rem;
+        padding: 2px 5px;
+    }
+
+    .delivered-controls {
+        justify-content: center;
+    }
+
+    .delivered-toggle-label {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+    }
+
+    .want-toggle {
+        align-items: stretch;
+        padding: 1.1rem;
+    }
+
+    .want-toggle-buttons {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .want-toggle-btn {
+        width: 100%;
+        min-height: 48px;
+        padding: 0.7rem 0.55rem;
         font-size: 0.9rem;
     }
 
     .gallery {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .filter-buttons,
+    .want-toggle-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-btn,
+    .want-toggle-btn,
+    .delivered-toggle-label {
+        min-height: 48px;
     }
 }
