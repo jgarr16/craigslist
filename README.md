@@ -76,3 +76,13 @@ When someone visits a category URL, the page automatically filters to show only 
 The URL pattern is: `https://jgarr16.github.io/craigslist/#[category_name]`
 
 The category name in the URL should match the category name from your image filenames (the part between `craigslist_` and `_[number]`).
+
+## Delivered Item Workflow
+
+Use the in-app controls to keep track of items that are already resolved:
+
+- Select a category and click **Delivered** in the "Mark this item" controls.
+- Delivered categories are hidden from the default **All** view to keep active inventory clean.
+- Turn on **Show delivered items** to review resolved categories or undo a status.
+
+This gives you a lightweight way to identify what should "go away" without deleting files immediately.

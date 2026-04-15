@@ -30,12 +30,20 @@
             <!-- Buttons will be dynamically generated -->
         </div>
 
+        <div class="delivered-controls">
+            <label class="delivered-toggle-label">
+                <input type="checkbox" class="show-delivered-toggle">
+                Show delivered items
+            </label>
+        </div>
+
         <div class="want-toggle" style="display: none;">
             <div class="want-toggle-label">Mark this item:</div>
             <div class="want-toggle-buttons">
                 <button class="want-toggle-btn" data-status="new">NEW</button>
                 <button class="want-toggle-btn" data-status="want">✓ Want</button>
                 <button class="want-toggle-btn" data-status="dont-want">✗ Don't Want</button>
+                <button class="want-toggle-btn" data-status="delivered">Delivered</button>
                 <button class="want-toggle-btn" data-status="undecided">Clear</button>
             </div>
         </div>
@@ -104,7 +112,9 @@
         // Want/Don't Want functionality
         const wantToggle = document.querySelector('.want-toggle');
         const wantToggleButtons = document.querySelectorAll('.want-toggle-btn');
+        const showDeliveredToggle = document.querySelector('.show-delivered-toggle');
         let categoryWantStatus = {};
+        let showDeliveredItems = false;
 
         // Load notes from Firebase
         const loadNotes = () => {
@@ -209,11 +219,18 @@
                     indicator.textContent = '✗';
                     indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
                     item.appendChild(indicator);
+                } else if (status === 'delivered') {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'want-indicator delivered';
+                    indicator.textContent = 'DEL';
+                    indicator.style.display = currentCategory === 'all' ? 'flex' : 'none';
+                    item.appendChild(indicator);
                 }
             });
 
             // Update button indicators
             updateButtonIndicators();
+            refreshCategoryButtonVisibility();
         };
 
         // Update want indicators on filter buttons
@@ -236,10 +253,30 @@
                     } else if (status === 'dont-want') {
                         indicator.textContent = '✗';
                         indicator.className = 'btn-indicator dont-want';
+                    } else if (status === 'delivered') {
+                        indicator.textContent = 'DEL';
+                        indicator.className = 'btn-indicator delivered';
                     } else {
                         indicator.textContent = '';
                         indicator.className = 'btn-indicator';
                     }
+                }
+            });
+        };
+
+        // Hide delivered category buttons unless explicitly shown
+        const refreshCategoryButtonVisibility = () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                const category = btn.getAttribute('data-filter');
+                if (category === 'all') return;
+
+                const isDelivered = categoryWantStatus[category] === 'delivered';
+                const isActive = btn.classList.contains('active');
+                if (isDelivered && !showDeliveredItems && !isActive) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.style.display = '';
                 }
             });
         };
@@ -252,7 +289,7 @@
                 if (btnStatus === status) {
                     btn.classList.add('active', status);
                 } else {
-                    btn.classList.remove('active', 'want', 'dont-want', 'undecided', 'new');
+                    btn.classList.remove('active', 'want', 'dont-want', 'undecided', 'new', 'delivered');
                 }
             });
         };
@@ -444,8 +481,14 @@
                         const number = item.getAttribute('data-number');
                         const overlay = item.querySelector('.category-overlay');
                         const indicator = item.querySelector('.want-indicator');
+                        const isDelivered = categoryWantStatus[category] === 'delivered';
 
                         if (filterValue === 'all') {
+                            if (isDelivered && !showDeliveredItems) {
+                                item.classList.remove('show');
+                                setTimeout(() => item.style.display = 'none', 300);
+                                return;
+                            }
                             // Only show first image of each category
                             if (number === '1') {
                                 item.style.display = 'block';
@@ -466,6 +509,8 @@
                             setTimeout(() => item.style.display = 'none', 300);
                         }
                     });
+
+                    refreshCategoryButtonVisibility();
 
                     // Show/hide want toggle
                     if (filterValue === 'all') {
@@ -496,6 +541,11 @@
                         const filterValue = button.getAttribute('data-filter');
                         applyFilter(filterValue);
                     });
+                });
+
+                showDeliveredToggle.addEventListener('change', () => {
+                    showDeliveredItems = showDeliveredToggle.checked;
+                    applyFilter(currentCategory || 'all', false);
                 });
 
                 // Make gallery items clickable to filter by category
